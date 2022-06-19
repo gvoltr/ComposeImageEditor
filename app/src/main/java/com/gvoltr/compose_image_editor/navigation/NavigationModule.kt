@@ -15,6 +15,5 @@ class NavigationModule {
     fun providesNavigationManager() = NavigationManager()
 
     @Provides
-    @Singleton
     fun providesNavigator(manager: NavigationManager) = manager as Navigator
 }

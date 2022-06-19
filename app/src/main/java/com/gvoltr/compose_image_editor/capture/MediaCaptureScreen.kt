@@ -172,7 +172,6 @@ private fun SavedMedia(
                         .clip(RoundedCornerShape(4.dp))
                         .clickable { actioner(MediaCaptureAction.OpenMedia(it)) }
                 ) {
-
                     AsyncImage(
                         modifier = Modifier
                             .fillMaxSize(),
