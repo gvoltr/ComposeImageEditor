@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.gvoltr.compose_image_editor.capture.MediaCaptureDestination
 import com.gvoltr.compose_image_editor.draw.PhotoEditorDestination
 import com.gvoltr.compose_image_editor.navigation.NavigationManager
 import com.gvoltr.compose_image_editor.preview.MediaPreviewDestination
+import com.gvoltr.compose_image_editor.ui.theme.Colors
 import com.gvoltr.compose_image_editor.ui.theme.ComposeImageEditorTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,6 +43,13 @@ fun Content(
     val navController = rememberNavController()
     LaunchedEffect(key1 = navController) {
         navigationProvider.setNavController(navController)
+    }
+
+    val systemUiController = rememberSystemUiController()
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = Colors.Gray900
+        )
     }
 
     ComposeImageEditorTheme {

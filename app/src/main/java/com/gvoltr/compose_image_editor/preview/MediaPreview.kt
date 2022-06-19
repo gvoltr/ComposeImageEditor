@@ -54,13 +54,6 @@ private fun MediaPreviewContent(
         pagerState.scrollToPage(state.selectedMediaPosition)
     }
 
-//    // when user delete last media file we need to scroll to the previous position
-//    LaunchedEffect(key1 = state.media) {
-//        if (state.media.isNotEmpty() && pagerState.currentPage >= state.media.size) {
-//            pagerState.scrollToPage(state.media.size - 1)
-//        }
-//    }
-
     // Pause player when moving between pages
     LaunchedEffect(key1 = pagerState.currentPage) {
         val player = exoWrapper.value[previousPage.value]
