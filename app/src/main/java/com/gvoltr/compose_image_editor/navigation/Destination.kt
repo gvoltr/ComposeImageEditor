@@ -4,6 +4,5 @@ import androidx.navigation.NavGraphBuilder
 
 interface Destination {
     val route: String
-    val command: NavigationCommand
     fun addToGraph(navGraphBuilder: NavGraphBuilder)
 }

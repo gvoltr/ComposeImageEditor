@@ -15,7 +15,6 @@ sealed interface MediaCaptureAction {
     data class OnRecordAudioPermissionStatusChanged(val granted: Boolean) : MediaCaptureAction
     data class OnPictureTaken(val uri: Uri) : MediaCaptureAction
     data class OnGalleryMediaSelected(val uri: Uri) : MediaCaptureAction
-    object OnTakePictureFailure : MediaCaptureAction
     object SwapCamera : MediaCaptureAction
     data class OpenMedia(val mediaFile: LocalFile) : MediaCaptureAction
 }

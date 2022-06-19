@@ -10,8 +10,7 @@ data class MediaCaptureState(
     val cameraType: CameraType = CameraType.Back,
     val activeCaptureState: CaptureState = CaptureState.Photo,
     val cameraPermissionGranted: Boolean = false,
-    val recordAudioPermissionGranted: Boolean = false,
-    val isLoading: Boolean = false
+    val recordAudioPermissionGranted: Boolean = false
 ) : State {
 
     companion object {

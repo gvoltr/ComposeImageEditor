@@ -1,4 +1,4 @@
-package com.gvoltr.compose_image_editor.state
+package com.gvoltr.compose_image_editor.base
 
 import androidx.compose.runtime.Immutable
 import kotlinx.coroutines.flow.MutableStateFlow

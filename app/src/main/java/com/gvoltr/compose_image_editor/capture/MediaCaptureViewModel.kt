@@ -9,6 +9,8 @@ import com.gvoltr.compose_image_editor.media.FileType
 import com.gvoltr.compose_image_editor.media.LocalFile
 import com.gvoltr.compose_image_editor.media.file.FileInfoProvider
 import com.gvoltr.compose_image_editor.media.file.FileStorage
+import com.gvoltr.compose_image_editor.navigation.Navigator
+import com.gvoltr.compose_image_editor.preview.MediaPreviewNavigation
 import com.gvoltr.compose_image_editor.state.MediaStateHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -19,7 +21,8 @@ import javax.inject.Inject
 class MediaCaptureViewModel @Inject constructor(
     private val fileStorage: FileStorage,
     private val mediaState: MediaStateHolder,
-    private val fileInfoProvider: FileInfoProvider
+    private val fileInfoProvider: FileInfoProvider,
+    private val navigator: Navigator
 ) : BaseViewModel<MediaCaptureState, MediaCaptureAction, MediaCaptureEffect>(MediaCaptureState.Empty) {
 
     private val logTag = "MediaCaptureVM"
@@ -39,15 +42,16 @@ class MediaCaptureViewModel @Inject constructor(
             is MediaCaptureAction.OnCameraPermissionStatusChanged -> {
                 setState { copy(cameraPermissionGranted = action.granted) }
             }
-            is MediaCaptureAction.OnRecordAudioPermissionStatusChanged ->  {
+            is MediaCaptureAction.OnRecordAudioPermissionStatusChanged -> {
                 setState { copy(recordAudioPermissionGranted = action.granted) }
             }
             is MediaCaptureAction.OnGalleryMediaSelected -> addMedia(action.uri)
             is MediaCaptureAction.OnPictureTaken -> addMedia(action.uri, FileType.Image)
-            MediaCaptureAction.OnTakePictureFailure -> Unit
             MediaCaptureAction.OnVideoCaptureFailure -> onVideoRecordingFailure()
             MediaCaptureAction.OnVideoCaptureStopped -> onVideoRecordingStopped()
-            is MediaCaptureAction.OpenMedia -> TODO()
+            is MediaCaptureAction.OpenMedia -> navigator.navigate(
+                MediaPreviewNavigation.createCommand(action.mediaFile.uri.lastPathSegment ?: "")
+            )
             MediaCaptureAction.StartVideoCapture -> startVideoRecording()
             MediaCaptureAction.StopVideoCapture -> stopVideoRecording()
             MediaCaptureAction.SwapCamera -> swapCamera()

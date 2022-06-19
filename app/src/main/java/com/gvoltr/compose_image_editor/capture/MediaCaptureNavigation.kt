@@ -8,7 +8,7 @@ import com.gvoltr.compose_image_editor.navigation.NavigationCommand
 object MediaCaptureNavigation : Destination {
 
     override val route = "capture"
-    override val command = NavigationCommand(route)
+    val command = NavigationCommand(route)
 
     override fun addToGraph(navGraphBuilder: NavGraphBuilder) {
         navGraphBuilder.composable(route = route) {

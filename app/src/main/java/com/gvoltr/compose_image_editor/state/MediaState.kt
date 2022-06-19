@@ -1,5 +1,7 @@
 package com.gvoltr.compose_image_editor.state
 
+import com.gvoltr.compose_image_editor.base.FeatureState
+import com.gvoltr.compose_image_editor.base.FeatureStateHolder
 import com.gvoltr.compose_image_editor.media.LocalFile
 import javax.inject.Inject
 import javax.inject.Singleton

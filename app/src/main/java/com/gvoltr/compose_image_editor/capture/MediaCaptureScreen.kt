@@ -86,8 +86,6 @@ private fun MediaCameraContent(
                     val result = mediaCapture.takePicture(effect.fileUri)
                     if (result == MediaCaptureResult.Success) {
                         actioner(MediaCaptureAction.OnPictureTaken(effect.fileUri))
-                    } else {
-                        actioner(MediaCaptureAction.OnTakePictureFailure)
                     }
                 }
                 is MediaCaptureEffect.StartVideoCapture -> {

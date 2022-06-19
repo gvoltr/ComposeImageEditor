@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.gvoltr.compose_image_editor.capture.MediaCaptureNavigation
 import com.gvoltr.compose_image_editor.draw.ImageEditorNavigation
 import com.gvoltr.compose_image_editor.navigation.NavigationManager
+import com.gvoltr.compose_image_editor.preview.MediaPreviewNavigation
 import com.gvoltr.compose_image_editor.ui.theme.ComposeImageEditorTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -50,6 +51,7 @@ fun Content(
                 modifier = Modifier.padding(it),
             ) {
                 MediaCaptureNavigation.addToGraph(this)
+                MediaPreviewNavigation.addToGraph(this)
                 ImageEditorNavigation.addToGraph(this)
             }
         }
