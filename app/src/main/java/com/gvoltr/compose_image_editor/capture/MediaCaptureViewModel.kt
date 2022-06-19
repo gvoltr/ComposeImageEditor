@@ -10,7 +10,7 @@ import com.gvoltr.compose_image_editor.media.LocalFile
 import com.gvoltr.compose_image_editor.media.file.FileInfoProvider
 import com.gvoltr.compose_image_editor.media.file.FileStorage
 import com.gvoltr.compose_image_editor.navigation.Navigator
-import com.gvoltr.compose_image_editor.preview.MediaPreviewNavigation
+import com.gvoltr.compose_image_editor.preview.MediaPreviewDestination
 import com.gvoltr.compose_image_editor.state.MediaStateHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -50,7 +50,7 @@ class MediaCaptureViewModel @Inject constructor(
             MediaCaptureAction.OnVideoCaptureFailure -> onVideoRecordingFailure()
             MediaCaptureAction.OnVideoCaptureStopped -> onVideoRecordingStopped()
             is MediaCaptureAction.OpenMedia -> navigator.navigate(
-                MediaPreviewNavigation.createCommand(action.mediaFile.uri.lastPathSegment ?: "")
+                MediaPreviewDestination.createCommand(action.mediaFile.uri.lastPathSegment ?: "")
             )
             MediaCaptureAction.StartVideoCapture -> startVideoRecording()
             MediaCaptureAction.StopVideoCapture -> stopVideoRecording()

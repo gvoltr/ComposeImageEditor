@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.gvoltr.compose_image_editor.base.BaseViewModel
 import com.gvoltr.compose_image_editor.base.takeWhenChanged
+import com.gvoltr.compose_image_editor.draw.PhotoEditorDestination
 import com.gvoltr.compose_image_editor.media.LocalFile
 import com.gvoltr.compose_image_editor.media.file.FileInfoProvider
 import com.gvoltr.compose_image_editor.media.file.FileStorage
@@ -38,12 +39,9 @@ class MediaPreviewViewModel @Inject constructor(
         when (action) {
             is MediaPreviewAction.DeleteMedia -> deleteMedia(action.mediaFile)
             is MediaPreviewAction.EditPhoto -> {
-//                navigator.navigate(
-//                    NavigationDirections.inspectionMediaEdit(
-//                        techRecommendationId,
-//                        action.mediaFile.uri.lastPathSegment ?: ""
-//                    )
-//                )
+                navigator.navigate(
+                    PhotoEditorDestination.createCommand(action.mediaFile.uri.lastPathSegment ?: "")
+                )
             }
         }
     }
@@ -51,7 +49,7 @@ class MediaPreviewViewModel @Inject constructor(
     // One time media and selected media position set
     private fun setupMediaWithPosition() {
         val selectedMediaFilename =
-            savedStateHandle.get<String>(MediaPreviewNavigation.argSelectedMedia).orEmpty()
+            savedStateHandle.get<String>(MediaPreviewDestination.argSelectedMedia).orEmpty()
         val media = mediaState.currentValue.capturedMedia
         val position =
             max(media.indexOfFirst { it.uri.lastPathSegment == selectedMediaFilename }, 0)
@@ -67,7 +65,10 @@ class MediaPreviewViewModel @Inject constructor(
                     navigator.navigateBack()
                 } else {
                     setState {
-                        copy(media = it, selectedMediaPosition = min(selectedMediaPosition, it.lastIndex))
+                        copy(
+                            media = it,
+                            selectedMediaPosition = min(selectedMediaPosition, it.lastIndex)
+                        )
                     }
                 }
             }

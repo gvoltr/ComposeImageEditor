@@ -1,18 +1,18 @@
-package com.gvoltr.compose_image_editor.draw
+package com.gvoltr.compose_image_editor.capture
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.gvoltr.compose_image_editor.navigation.Destination
 import com.gvoltr.compose_image_editor.navigation.NavigationCommand
 
-object ImageEditorNavigation : Destination {
+object MediaCaptureDestination : Destination {
 
-    override val route = "editor"
+    override val route = "capture"
     val command = NavigationCommand(route)
 
     override fun addToGraph(navGraphBuilder: NavGraphBuilder) {
         navGraphBuilder.composable(route = route) {
-            ImageEditorScreen()
+            MediaCaptureScreen()
         }
     }
 }

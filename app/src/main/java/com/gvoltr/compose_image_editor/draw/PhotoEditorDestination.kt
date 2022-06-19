@@ -1,4 +1,4 @@
-package com.gvoltr.compose_image_editor.preview
+package com.gvoltr.compose_image_editor.draw
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -7,23 +7,22 @@ import androidx.navigation.navArgument
 import com.gvoltr.compose_image_editor.navigation.Destination
 import com.gvoltr.compose_image_editor.navigation.NavigationCommand
 
-object MediaPreviewNavigation : Destination {
-    const val argSelectedMedia = "selected_media"
-    override val route = "media_preview"
+object PhotoEditorDestination : Destination {
+    const val argSelectedPhoto = "selected_photo"
+    override val route = "editor"
 
     override fun addToGraph(navGraphBuilder: NavGraphBuilder) {
         navGraphBuilder.composable(
-            route = "$route/{$argSelectedMedia}",
-            arguments = listOf(navArgument(argSelectedMedia) {
+            route = "${route}/{${argSelectedPhoto}}",
+            arguments = listOf(navArgument(argSelectedPhoto) {
                 type = NavType.StringType
                 defaultValue = ""
             })
         ) {
-            MediaPreviewScreen()
+            PhotoEditorScreen()
         }
     }
 
     fun createCommand(selectedMedia: String) =
-        NavigationCommand(destination = "$route/$selectedMedia")
-
+        NavigationCommand(destination = "${route}/$selectedMedia")
 }
