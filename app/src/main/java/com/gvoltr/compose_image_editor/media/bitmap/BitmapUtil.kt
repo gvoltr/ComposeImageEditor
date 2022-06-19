@@ -1,4 +1,4 @@
-package com.gvoltr.compose_image_editor.base
+package com.gvoltr.compose_image_editor.media.bitmap
 
 import android.content.Context
 import android.graphics.Bitmap

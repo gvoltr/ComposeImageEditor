@@ -8,7 +8,7 @@ import com.gvoltr.compose_image_editor.capture.camera.CameraType
 import com.gvoltr.compose_image_editor.media.FileType
 import com.gvoltr.compose_image_editor.media.LocalFile
 import com.gvoltr.compose_image_editor.media.file.FileInfoProvider
-import com.gvoltr.compose_image_editor.media.file.FileStorage
+import com.gvoltr.compose_image_editor.media.file.MediaRepository
 import com.gvoltr.compose_image_editor.navigation.Navigator
 import com.gvoltr.compose_image_editor.preview.MediaPreviewDestination
 import com.gvoltr.compose_image_editor.state.MediaStateHolder
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MediaCaptureViewModel @Inject constructor(
-    private val fileStorage: FileStorage,
+    private val mediaRepository: MediaRepository,
     private val mediaState: MediaStateHolder,
     private val fileInfoProvider: FileInfoProvider,
     private val navigator: Navigator
@@ -71,7 +71,7 @@ class MediaCaptureViewModel @Inject constructor(
             return
         }
 
-        emitEffect(MediaCaptureEffect.TakePicture(fileStorage.createTempImageFile()))
+        emitEffect(MediaCaptureEffect.TakePicture(mediaRepository.createTempImageFile()))
     }
 
     private suspend fun startVideoRecording() {
@@ -85,7 +85,7 @@ class MediaCaptureViewModel @Inject constructor(
         // Do not start recording if recording is already started
         if (recordingState is RecordingState.Active) return
 
-        val videoUri = fileStorage.createTempVideoFile()
+        val videoUri = mediaRepository.createTempVideoFile()
         emitEffect(
             MediaCaptureEffect.StartVideoCapture(
                 videoUri,

@@ -67,7 +67,7 @@ private fun DrawScope.drawPath(path: Path, strokeWidthPx: Float, color: Color) {
             width = strokeWidthPx,
             join = StrokeJoin.Round,
             cap = StrokeCap.Round,
-            pathEffect = PathEffect.cornerPathEffect(45f)
+            pathEffect = PathEffect.cornerPathEffect(90f)
         ),
     )
 }

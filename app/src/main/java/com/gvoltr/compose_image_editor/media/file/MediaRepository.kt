@@ -5,6 +5,8 @@ import android.net.Uri
 import android.util.Log
 import androidx.core.net.toFile
 import androidx.core.net.toUri
+import com.gvoltr.compose_image_editor.media.bitmap.BitmapDrawing
+import com.gvoltr.compose_image_editor.media.bitmap.ImageEditor
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,7 +14,11 @@ import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 
-class FileStorage @Inject constructor(@ApplicationContext private val context: Context) {
+class MediaRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val fileInfoProvider: FileInfoProvider,
+    private val imageEditor: ImageEditor
+) {
 
     private val logTag = "FileStorage"
 
@@ -52,5 +58,14 @@ class FileStorage @Inject constructor(@ApplicationContext private val context: C
                 Log.e(logTag, error.stackTraceToString())
             }
         }
+    }
+
+    suspend fun drawOnImage(uri: Uri, drawings: List<BitmapDrawing>): Uri {
+        val outputImage = createTempImageFile()
+        imageEditor.drawOnImage(reference = uri, outputImage = outputImage, drawings = drawings)
+        if (fileInfoProvider.isFromAppCache(uri)) {
+            delete(uri)
+        }
+        return outputImage
     }
 }

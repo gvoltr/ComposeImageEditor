@@ -3,10 +3,15 @@ package com.gvoltr.compose_image_editor.draw
 import androidx.compose.ui.graphics.Path
 import androidx.lifecycle.SavedStateHandle
 import com.gvoltr.compose_image_editor.base.BaseViewModel
-import com.gvoltr.compose_image_editor.base.BitmapUtil
 import com.gvoltr.compose_image_editor.base.DimensionUtil
+import com.gvoltr.compose_image_editor.base.replace
 import com.gvoltr.compose_image_editor.draw.ColorOptions.lineDrawingColors
 import com.gvoltr.compose_image_editor.draw.ColorOptions.textDrawingColors
+import com.gvoltr.compose_image_editor.media.FileType
+import com.gvoltr.compose_image_editor.media.LocalFile
+import com.gvoltr.compose_image_editor.media.UriType
+import com.gvoltr.compose_image_editor.media.bitmap.BitmapUtil
+import com.gvoltr.compose_image_editor.media.file.MediaRepository
 import com.gvoltr.compose_image_editor.navigation.Navigator
 import com.gvoltr.compose_image_editor.state.MediaStateHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +21,7 @@ import javax.inject.Inject
 class PhotoEditorViewModel @Inject constructor(
     private val bitmapUtil: BitmapUtil,
     private val dimensionUtil: DimensionUtil,
+    private val mediaRepository: MediaRepository,
     private val mediaStateHolder: MediaStateHolder,
     private val savedStateHandle: SavedStateHandle,
     private val navigator: Navigator
@@ -46,7 +52,8 @@ class PhotoEditorViewModel @Inject constructor(
     }
 
     private fun setupImage() {
-        val selectedMediaFilename = savedStateHandle.get<String>(PhotoEditorDestination.argSelectedPhoto).orEmpty()
+        val selectedMediaFilename =
+            savedStateHandle.get<String>(PhotoEditorDestination.argSelectedPhoto).orEmpty()
 
         val media = mediaStateHolder
             .currentValue
@@ -79,40 +86,29 @@ class PhotoEditorViewModel @Inject constructor(
 
     private suspend fun saveDrawings() {
         stopLineDrawing()
-//
-//        val output = drawOnImageUseCase.invoke(
-//            DrawOnImageUseCase.Params(
-//                currentValue.image.uri,
-//                BitmapDrawingMapper(
-//                    currentValue.canvasSize,
-//                    currentValue.strokeWidth,
-//                    dimensionUtil
-//                ).mapList(currentValue.drawings)
-//            )
-//        )
-//        if (output !is InvokeSuccess) {
-//            // TODO: report drawing failure
-//            return
-//        }
-//        val mediaFile = LocalFile(output.data, UriType.File, FileType.Image)
-//        inspectionsStateHolder.setState {
-//            copy(
-//                userAttachedFiles = userAttachedFiles.reduce(
-//                    predicate = { it.techRecommendationId == checkId },
-//                    reducer = {
-//                        copy(
-//                            mediaFiles = mediaFiles.replace(
-//                                { it.uri == currentValue.image.uri },
-//                                mediaFile
-//                            )
-//                        )
-//                    },
-//                    factory = {
-//                        UserAttachedMediaFiles(checkId, listOf(mediaFile))
-//                    }
-//                )
-//            )
-//        }
+
+        val drawingsMapper = BitmapDrawingMapper(
+            currentValue.canvasSize,
+            currentValue.strokeWidth,
+            dimensionUtil
+        )
+
+        val savedImage = mediaRepository.drawOnImage(
+            currentValue.image.uri,
+            currentValue.drawings.map {
+                drawingsMapper.map(it)
+            }
+        )
+        val mediaFile = LocalFile(savedImage, UriType.File, FileType.Image)
+
+        mediaStateHolder.setState {
+            copy(
+                capturedMedia = capturedMedia.replace(
+                    { it.uri == currentValue.image.uri },
+                    mediaFile
+                )
+            )
+        }
         navigator.navigateBack()
     }
 

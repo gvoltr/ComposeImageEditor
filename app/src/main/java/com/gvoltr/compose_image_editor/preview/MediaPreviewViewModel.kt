@@ -7,7 +7,7 @@ import com.gvoltr.compose_image_editor.base.takeWhenChanged
 import com.gvoltr.compose_image_editor.draw.PhotoEditorDestination
 import com.gvoltr.compose_image_editor.media.LocalFile
 import com.gvoltr.compose_image_editor.media.file.FileInfoProvider
-import com.gvoltr.compose_image_editor.media.file.FileStorage
+import com.gvoltr.compose_image_editor.media.file.MediaRepository
 import com.gvoltr.compose_image_editor.navigation.Navigator
 import com.gvoltr.compose_image_editor.state.MediaStateHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import kotlin.math.min
 @HiltViewModel
 class MediaPreviewViewModel @Inject constructor(
     private val fileInfoProvider: FileInfoProvider,
-    private val fileStorage: FileStorage,
+    private val mediaRepository: MediaRepository,
     private val mediaState: MediaStateHolder,
     private val navigator: Navigator,
     private val savedStateHandle: SavedStateHandle
@@ -76,7 +76,7 @@ class MediaPreviewViewModel @Inject constructor(
 
     private suspend fun deleteMedia(media: LocalFile) {
         if (fileInfoProvider.isFromAppCache(media.uri)) {
-            fileStorage.delete(media.uri)
+            mediaRepository.delete(media.uri)
         }
 
         mediaState.setState {
