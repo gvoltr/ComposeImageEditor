@@ -2,7 +2,7 @@ package com.gvoltr.compose_image_editor.navigation
 
 import androidx.navigation.NavController
 
-class NavigationManager  : Navigator {
+class NavigationManager : Navigator {
     private var navController: NavController? = null
 
     fun setNavController(navController: NavController) {
