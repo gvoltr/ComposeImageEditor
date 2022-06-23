@@ -25,10 +25,6 @@ open class BaseViewModel<STATE : State, ACTION, EFFECT>(initialState: STATE) : V
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
-    // Strategy ensures that any values emitted before the initial subscribe are replayed, but
-    // none are replayed after that. This means that the View being recreated and re-subscribing
-    // wont cause Actions or Effects to repeat.
-
     /**
      * [ACTION]s are typically user-initiated actions performed in the UI, for example, clicking a
      * button. They are fired by the View.
@@ -63,10 +59,6 @@ open class BaseViewModel<STATE : State, ACTION, EFFECT>(initialState: STATE) : V
 
     fun setState(reducer: STATE.() -> STATE) {
         innerState.update(reducer)
-    }
-
-    companion object {
-        const val WHILE_SUBSCRIBED_TIMEOUT = 5000L
     }
 }
 
